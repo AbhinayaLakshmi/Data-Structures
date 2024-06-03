@@ -1,14 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-// Node structure for doubly linked list
 struct Node {
     int data;
     struct Node* next;
     struct Node* prev;
 };
-
-// Function to create a new node
 struct Node* createNode(int data) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->data = data;
@@ -16,8 +12,6 @@ struct Node* createNode(int data) {
     newNode->next = NULL;
     return newNode;
 }
-
-// Function to insert a node at the beginning of the list
 void insertAtBeginning(struct Node** head, int data) {
     struct Node* newNode = createNode(data);
     if (*head == NULL) {
@@ -28,8 +22,6 @@ void insertAtBeginning(struct Node** head, int data) {
         *head = newNode;
     }
 }
-
-// Function to delete the first node in the list
 void deleteAtBeginning(struct Node** head) {
     if (*head == NULL) {
         printf("List is empty. Nothing to delete.\n");
@@ -41,15 +33,11 @@ void deleteAtBeginning(struct Node** head) {
         (*head)->prev = NULL;
     free(temp);
 }
-
-// Function to search for a node with a given key
 struct Node* search(struct Node* head, int key) {
     while (head != NULL && head->data != key)
         head = head->next;
     return head;
 }
-
-// Function to display the doubly linked list
 void display(struct Node* head) {
     if (head == NULL) {
         printf("List is empty.\n");
@@ -62,8 +50,6 @@ void display(struct Node* head) {
     }
     printf("\n");
 }
-
-// Main function
 int main() {
     struct Node* head = NULL;
     int choice, data, key;
