@@ -1,14 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-// Structure for a single term in a polynomial
 struct Term {
     int coefficient;
     int exponent;
     struct Term* next;
 };
-
-// Function prototypes
 struct Term* createTerm(int coeff, int exp);
 void insertTerm(struct Term** poly, int coeff, int exp);
 void displayPolynomial(struct Term* poly);
@@ -16,7 +12,6 @@ struct Term* addPolynomials(struct Term* poly1, struct Term* poly2);
 struct Term* subtractPolynomials(struct Term* poly1, struct Term* poly2);
 struct Term* multiplyPolynomials(struct Term* poly1, struct Term* poly2);
 
-// Function to create a new term
 struct Term* createTerm(int coeff, int exp) {
     struct Term* new_term = (struct Term*)malloc(sizeof(struct Term));
     if (new_term != NULL) {
@@ -26,8 +21,6 @@ struct Term* createTerm(int coeff, int exp) {
     }
     return new_term;
 }
-
-// Function to insert a term into a polynomial
 void insertTerm(struct Term** poly, int coeff, int exp) {
     struct Term* new_term = createTerm(coeff, exp);
     if (*poly == NULL) {
@@ -39,8 +32,6 @@ void insertTerm(struct Term** poly, int coeff, int exp) {
         current->next = new_term;
     }
 }
-
-// Function to display a polynomial
 void displayPolynomial(struct Term* poly) {
     if (poly == NULL) {
         printf("0\n");
@@ -54,8 +45,6 @@ void displayPolynomial(struct Term* poly) {
     }
     printf("\n");
 }
-
-// Function to add two polynomials
 struct Term* addPolynomials(struct Term* poly1, struct Term* poly2) {
     struct Term* result = NULL;
     while (poly1 != NULL && poly2 != NULL) {
@@ -81,8 +70,6 @@ struct Term* addPolynomials(struct Term* poly1, struct Term* poly2) {
     }
     return result;
 }
-
-// Function to subtract two polynomials
 struct Term* subtractPolynomials(struct Term* poly1, struct Term* poly2) {
     struct Term* result = NULL;
     while (poly1 != NULL && poly2 != NULL) {
@@ -108,8 +95,6 @@ struct Term* subtractPolynomials(struct Term* poly1, struct Term* poly2) {
     }
     return result;
 }
-
-// Function to multiply two polynomials
 struct Term* multiplyPolynomials(struct Term* poly1, struct Term* poly2) {
     struct Term* result = NULL;
     struct Term* temp = poly2;
@@ -123,12 +108,9 @@ struct Term* multiplyPolynomials(struct Term* poly1, struct Term* poly2) {
     }
     return result;
 }
-
-// Main function
 int main() {
     struct Term* poly1 = NULL;
     struct Term* poly2 = NULL;
-
     // Adding terms to polynomial 1
     insertTerm(&poly1, 3, 2);
     insertTerm(&poly1, 4, 1);
@@ -145,22 +127,22 @@ int main() {
     printf("Polynomial 2: ");
     displayPolynomial(poly2);
 
-    // Performing polynomial addition
+    // addition
     struct Term* sum = addPolynomials(poly1, poly2);
     printf("Polynomial Addition: ");
     displayPolynomial(sum);
 
-    // Performing polynomial subtraction
+    // subtraction
     struct Term* diff = subtractPolynomials(poly1, poly2);
     printf("Polynomial Subtraction: ");
     displayPolynomial(diff);
 
-    // Performing polynomial multiplication
+    // multiplication
     struct Term* product = multiplyPolynomials(poly1, poly2);
     printf("Polynomial Multiplication: ");
     displayPolynomial(product);
 
-    // Freeing allocated memory
+   
     free(sum);
     free(diff);
     free(product);
