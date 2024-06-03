@@ -1,13 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-// Define the structure for a node in the linked list
 struct Node {
     int data;
     struct Node* next;
 };
-
-// Function to create a new node
 struct Node* createNode(int value) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     if (newNode == NULL) {
@@ -18,15 +14,11 @@ struct Node* createNode(int value) {
     newNode->next = NULL;
     return newNode;
 }
-
-// Function to insert a node at the beginning of the list
 void insertAtBeginning(struct Node** head, int value) {
     struct Node* newNode = createNode(value);
     newNode->next = *head;
     *head = newNode;
 }
-
-// Function to insert a node after a given node
 void insertAfter(struct Node* prevNode, int value) {
     if (prevNode == NULL) {
         printf("Previous node cannot be NULL.\n");
@@ -36,8 +28,6 @@ void insertAfter(struct Node* prevNode, int value) {
     newNode->next = prevNode->next;
     prevNode->next = newNode;
 }
-
-// Function to insert a node at the end of the list
 void insertAtEnd(struct Node** head, int value) {
     struct Node* newNode = createNode(value);
     if (*head == NULL) {
@@ -50,8 +40,6 @@ void insertAtEnd(struct Node** head, int value) {
     }
     temp->next = newNode;
 }
-
-// Function to find an element in the list
 struct Node* findElement(struct Node* head, int value) {
     struct Node* temp = head;
     while (temp != NULL) {
@@ -62,16 +50,12 @@ struct Node* findElement(struct Node* head, int value) {
     }
     return NULL; // Element not found
 }
-
-// Function to find the next element after a given node
 struct Node* findNext(struct Node* currentNode) {
     if (currentNode == NULL || currentNode->next == NULL) {
         return NULL;
     }
     return currentNode->next;
 }
-
-// Function to find the previous element before a given node
 struct Node* findPrevious(struct Node* head, struct Node* currentNode) {
     if (head == NULL || head == currentNode) {
         return NULL;
@@ -82,18 +66,12 @@ struct Node* findPrevious(struct Node* head, struct Node* currentNode) {
     }
     return temp;
 }
-
-// Function to check if a node is the last node in the list
 int isLast(struct Node* node) {
     return node->next == NULL ? 1 : 0;
 }
-
-// Function to check if the list is empty
 int isEmpty(struct Node* head) {
     return head == NULL ? 1 : 0;
 }
-
-// Function to delete the first node in the list
 void deleteFirstNode(struct Node** head) {
     if (*head == NULL) {
         printf("List is already empty.\n");
@@ -103,8 +81,6 @@ void deleteFirstNode(struct Node** head) {
     *head = (*head)->next;
     free(temp);
 }
-
-// Function to delete the node after a given node
 void deleteNodeAfter(struct Node* prevNode) {
     if (prevNode == NULL || prevNode->next == NULL) {
         printf("Previous node cannot be NULL or last node.\n");
@@ -114,8 +90,6 @@ void deleteNodeAfter(struct Node* prevNode) {
     prevNode->next = temp->next;
     free(temp);
 }
-
-// Function to delete the last node in the list
 void deleteLastNode(struct Node** head) {
     if (*head == NULL) {
         printf("List is already empty.\n");
@@ -133,8 +107,6 @@ void deleteLastNode(struct Node** head) {
     free(temp->next);
     temp->next = NULL;
 }
-
-// Function to delete the entire list
 void deleteList(struct Node** head) {
     struct Node* current = *head;
     struct Node* next;
@@ -145,8 +117,6 @@ void deleteList(struct Node** head) {
     }
     *head = NULL;
 }
-
-// Function to print the list
 void printList(struct Node* head) {
     struct Node* temp = head;
     while (temp != NULL) {
@@ -159,7 +129,6 @@ void printList(struct Node* head) {
 int main() {
     struct Node* head = NULL;
 
-    // Test the functions
     insertAtBeginning(&head, 3);
     insertAtBeginning(&head, 1);
     insertAtEnd(&head, 5);
