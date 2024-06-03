@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure for doubly linked list
+struct Node {
+    int data;
+    struct Node* next;
+    struct Node* prev;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to insert a node at the beginning of the list
+void insertAtBeginning(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+    } else {
+        newNode->next = *head;
+        (*head)->prev = newNode;
+        *head = newNode;
+    }
+}
+
+// Function to delete the first node in the list
+void deleteAtBeginning(struct Node** head) {
+    if (*head == NULL) {
+        printf("List is empty. Nothing to delete.\n");
+        return;
+    }
+    struct Node* temp = *head;
+    *head = (*head)->next;
+    if (*head != NULL)
+        (*head)->prev = NULL;
+    free(temp);
+}
+
+// Function to search for a node with a given key
+struct Node* search(struct Node* head, int key) {
+    while (head != NULL && head->data != key)
+        head = head->next;
+    return head;
+}
+
+// Function to display the doubly linked list
+void display(struct Node* head) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+    printf("Doubly linked list: ");
+    while (head != NULL) {
+        printf("%d ", head->data);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+// Main function
+int main() {
+    struct Node* head = NULL;
+    int choice, data, key;
+
+    while (1) {
+        printf("\nDoubly Linked List Operations:\n");
+        printf("1. Insert at beginning\n");
+        printf("2. Delete at beginning\n");
+        printf("3. Search\n");
+        printf("4. Display\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter data to insert at the beginning: ");
+                scanf("%d", &data);
+                insertAtBeginning(&head, data);
+                break;
+            case 2:
+                deleteAtBeginning(&head);
+                break;
+            case 3:
+                printf("Enter the key to search: ");
+                scanf("%d", &key);
+                if (search(head, key) != NULL)
+                    printf("Key found in the list.\n");
+                else
+                    printf("Key not found in the list.\n");
+                break;
+            case 4:
+                display(head);
+                break;
+            case 5:
+                printf("Exiting program...\n");
+                exit(0);
+            default:
+                printf("Invalid choice! Please enter a valid choice.\n");
+        }
+    }
+
+    return 0;
+}
