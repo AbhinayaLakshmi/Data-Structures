@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 100
+typedef struct {
+    char* items[MAX];
+    int top;
+} Stack;
+void initStack(Stack* s) {
+    s->top = -1;
+}
+int isEmpty(Stack* s) {
+    return s->top == -1;
+}
+int isFull(Stack* s) {
+    return s->top == MAX - 1;
+}
+void push(Stack* s, char* value) {
+    if (isFull(s)) {
+        printf("Stack overflow\n");
+        return;
+    }
+    s->items[++(s->top)] = value;
+}
+char* pop(Stack* s) {
+    if (isEmpty(s)) {
+        printf("Stack underflow\n");
+        return NULL;
+    }
+    return s->items[(s->top)--];
+}
+char* peek(Stack* s) {
+    if (isEmpty(s)) {
+        return NULL;
+    }
+    return s->items[s->top];
+}
+int isOperator(char ch) {
+    return ch == '+' || ch == '-' || ch == '*' || ch == '/';
+}
+void postfixToInfix(char* postfix, char* infix) {
+    Stack stack;
+    initStack(&stack);
+
+    for (int i = 0; i < strlen(postfix); i++) {
+        char ch = postfix[i];
+
+        if (isdigit(ch) || isalpha(ch)) {
+            char* operand = (char*)malloc(2 * sizeof(char));
+            operand[0] = ch;
+            operand[1] = '\0';
+            push(&stack, operand);
+        } else if (isOperator(ch)) {
+            char* op2 = pop(&stack);
+            char* op1 = pop(&stack);
+
+            int length = strlen(op1) + strlen(op2) + 4;
+            char* expr = (char*)malloc(length * sizeof(char));
+
+            snprintf(expr, length, "(%s%c%s)", op1, ch, op2);
+
+            free(op1);
+            free(op2);
+
+            push(&stack, expr);
+        }
+    }
+
+    strcpy(infix, pop(&stack));
+}
+
+int main() {
+    char postfix[MAX];
+    char infix[MAX];
+
+    printf("Enter a postfix expression: ");
+    fgets(postfix, MAX, stdin);
+    size_t len = strlen(postfix);
+    if (postfix[len - 1] == '\n') {
+        postfix[len - 1] = '\0';
+    }
+
+    postfixToInfix(postfix, infix);
+
+    printf("Infix expression: %s\n", infix);
+
+    return 0;
+}
