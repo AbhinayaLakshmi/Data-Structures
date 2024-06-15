@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TABLE_SIZE 10
+
+typedef struct {
+    int key;
+    int value;
+    int is_occupied;
+} HashTableEntry;
+
+HashTableEntry hash_table[TABLE_SIZE];
+int hash(int key) {
+    return key % TABLE_SIZE;
+}
+void insert(int key, int value) {
+    int index = hash(key);
+    int start_index = index;
+
+    while (hash_table[index].is_occupied) {
+        index = (index + 1) % TABLE_SIZE;
+        if (index == start_index) {
+            printf("Hash table is full\n");
+            return;
+        }
+    }
+    hash_table[index].key = key;
+    hash_table[index].value = value;
+    hash_table[index].is_occupied = 1;
+}
+int search(int key) {
+    int index = hash(key);
+    int start_index = index;
+
+    while (hash_table[index].is_occupied) {
+        if (hash_table[index].key == key) {
+            return hash_table[index].value;
+        }
+        index = (index + 1) % TABLE_SIZE;
+        if (index == start_index) {
+            break;
+        }
+    }
+    return -1; // Key not found
+}
+
+int main() {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        hash_table[i].is_occupied = 0;
+    }
+    insert(1, 10);
+    insert(2, 20);
+    insert(11, 110);
+    insert(12, 120);
+    printf("Value for key 1: %d\n", search(1));
+    printf("Value for key 11: %d\n", search(11));
+    printf("Value for key 3: %d\n", search(3));
+
+    return 0;
+}
