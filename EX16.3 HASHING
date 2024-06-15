@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define INITIAL_TABLE_SIZE 10
+
+typedef struct {
+    int key;
+    int value;
+    int is_occupied;
+} HashTableEntry;
+
+HashTableEntry* hash_table;
+int table_size;
+int current_size;
+
+int hash(int key) {
+    return key % table_size;
+}
+
+void rehash() {
+    int old_table_size = table_size;
+    table_size *= 2;
+    HashTableEntry* new_table = (HashTableEntry*)malloc(table_size * sizeof(HashTableEntry));
+    for (int i = 0; i < table_size; i++) {
+        new_table[i].is_occupied = 0;
+    }
+
+    for (int i = 0; i < old_table_size; i++) {
+        if (hash_table[i].is_occupied) {
+            int index = hash(hash_table[i].key);
+            while (new_table[index].is_occupied) {
+                index = (index + 1) % table_size;
+            }
+            new_table[index] = hash_table[i];
+        }
+    }
+
+    free(hash_table);
+    hash_table = new_table;
+}
+
+void insert(int key, int value) {
+    if (current_size >= table_size / 2) {
+        rehash();
+    }
+
+    int index = hash(key);
+    while (hash_table[index].is_occupied) {
+        index = (index + 1) % table_size;
+    }
+    hash_table[index].key = key;
+    hash_table[index].value = value;
+    hash_table[index].is_occupied = 1;
+    current_size++;
+}
+
+int search(int key) {
+    int index = hash(key);
+    int start_index = index;
+    while (hash_table[index].is_occupied) {
+        if (hash_table[index].key == key) {
+            return hash_table[index].value;
+        }
+        index = (index + 1) % table_size;
+        if (index == start_index) {
+            break;
+        }
+    }
+    return -1;
+}
+
+int main() {
+    table_size = INITIAL_TABLE_SIZE;
+    current_size = 0;
+    hash_table = (HashTableEntry*)malloc(table_size * sizeof(HashTableEntry));
+    for (int i = 0; i < table_size; i++) {
+        hash_table[i].is_occupied = 0;
+    }
+
+    insert(1, 10);
+    insert(2, 20);
+    insert(11, 110);
+    insert(12, 120);
+
+    printf("Value for key 1: %d\n", search(1));
+    printf("Value for key 11: %d\n", search(11));
+    printf("Value for key 3: %d\n", search(3));
+
+    free(hash_table);
+    return 0;
+}
